@@ -1,15 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "node.h"
 
-typedef struct node node;
-
-struct node
-{
-	int data;
-	node *left;
-	node *right;
-	node *parent;
-};
 struct node* max (struct node* middle)
 {
 	while (middle->right != NULL)
