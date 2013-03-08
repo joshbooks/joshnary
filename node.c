@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "node.h"
 
 struct node* max (struct node* middle)
@@ -31,9 +29,9 @@ struct node* newNode(int datum)
 	return edon;
 }
 
-//looping instead of resursing so stack doesn't topple
-//balancing from the top won't work because it makes the bottom all wobbly
-//is there any way to balnce from the bottom without insane overhead?
+//performs one extra check at the bottom, seems to eliminate the long-branch
+//unbalanced tree, the zigzag is a little less significant, but it
+//would be nice to deal with that too
 
 struct node* insert(struct node* node, int datum)
 {
@@ -101,6 +99,7 @@ struct node* find(struct node* start, int value)
 	puts("I dislike you");
 }
 
+
 int
 main(void)
 {
@@ -119,13 +118,13 @@ main(void)
 	for (i=0; i<10000; i++)
 		insert (n1, i);
 
-	for (i=0; i<10000; i++)
-		printf("%i\n", find(n1,i)->data);
+//	for (i=0; i<10000; i++)
+//		printf("%i\n", find(n1, i)->data);
 //	printf ("%i\n", top(n1)->left->right->data);
 //	printf ("%i\n", top(n1)->left->data);
-//	printf ("%i\n", top(n1)->data);
-//	printf ("%i\n", top(n1)->right->data);
-//	printf ("%i\n", top(n1)->right->right->data);
-//	printf ("%i\n", top(n1)->right->left->right->data);
+	printf ("%i\n", top(n1)->data);
+	printf ("%i\n", top(n1)->right->data);
+	printf ("%i\n", top(n1)->right->right->right->data);
+	printf ("%i\n", top(n1)->right->right->left->data);
 	return 0;
 }
