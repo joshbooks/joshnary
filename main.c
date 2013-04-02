@@ -21,14 +21,15 @@ main(void)
 //	treeprint(n1);
 
 //make sure I haven't screwed up tree structure
-	for (i=0; i<10000; i++)
-		printf("%i\n", find(n1, i)->data);
+//	for (i=0; i<10000; i++)
+//		printf("%i\n", find(n1, i)->data);
 //	printf ("%i\n", top(n1)->left->right->data);
 //	printf ("%i\n", top(n1)->left->data);
-//	printf ("%i\n", top(n1)->data);
-//	printf ("%i\n", top(n1)->right->data);
-//	printf ("%i\n", top(n1)->right->right->right->data);
-//	printf ("%i\n", top(n1)->right->right->left->data);
+	printf ("\t\t %i\n", top(n1)->data);
+	printf ("\t\t/ \\\n");
+	printf ("\t\t%i", top(n1)->left->data);
+	printf (" %i\n", top(n1)->right->data);
+	printf ("%i\n", top(n1)->right->right->left->data);
 
 //	printf ("%i\n", n1->left->right->data);
 //	printf ("%i\n", n1->left->data);
