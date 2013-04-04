@@ -25,9 +25,6 @@ main(void)
 //		printf("%i\n", find(n1, i)->data);
 //	printf ("%i\n", top(n1)->left->right->data);
 //	printf ("%i\n", top(n1)->left->data);
-	printf ("\t\t %i\n", top(n1)->data);
-	printf ("\t\t/ \\\n");
-	printf ("\t\t%i", top(n1)->left->data);
 	printf (" %i\n", top(n1)->right->data);
 	printf ("%i\n", top(n1)->right->right->left->data);
 

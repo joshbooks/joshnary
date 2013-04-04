@@ -100,6 +100,9 @@ struct node* find(struct node* start, int value)
 }
 
 //prints tree down from passed node
+//probably going to wind up being very similar to
+//linux tree, but a proper christmas tree appearance
+//would be excellent
 void treeprint(struct node* tree)
 {
 	tree = top(tree);
