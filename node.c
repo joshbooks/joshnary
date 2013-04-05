@@ -102,14 +102,21 @@ struct node* find(struct node* start, int value)
 
 //frees trees, because memory is not unlimited
 //no matter what my cs teachers say;
-//on that note, I waste a bunch of memory making the nodeNanny
-//structure but it's useful if I want to do other things,
-//so hopefully it's not a total waste
-/*
+//on that note, I waste a bunch of memory recursing :(
+
 void clean(struct node* before)
 {
+
+	if (before->right != NULL)
+		clean(before->right);
+
+	if (before->left != NULL)
+		clean(before->left);
+
+		free(before);
+
 }
-*/
+
 
 
 //prints tree down from passed node
