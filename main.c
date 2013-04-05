@@ -13,7 +13,7 @@ main(void)
 //	printf ("%i", min(n1)->right->data);
 //	printf ("%i", min(n1)->parent->data);
 
-	clean(n1);
+//	clean(n1);
 //if I can print all this crap it's a useful print function
 //	treeprint(n1);
 //make sure I haven't screwed up tree structure

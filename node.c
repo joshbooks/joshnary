@@ -46,7 +46,6 @@ struct node* insert(struct node* node, int datum)
 				if ( node->parent!=NULL && node->right==NULL && node->parent->right==NULL)
 				{
 					node->parent->right=newNode(node->parent->data);
-					node->next = node->parent->right;
 					node->parent->data = node->data;
 					node->data = datum;
 					return node;
@@ -54,7 +53,6 @@ struct node* insert(struct node* node, int datum)
 				else
 				{
 					node->left = newNode(datum);
-					node->next = node->left;
 					node->left->parent=node;
 					return node->left;
 				}
@@ -68,7 +66,6 @@ struct node* insert(struct node* node, int datum)
 				if (node->parent!=NULL && node->left==NULL && node->parent->left==NULL)
 				{
 					node->parent->left=newNode(node->parent->data);
-					node->next = node->parent->left;
 					node->parent->data = node->data;
 					node->data = datum;
 					return node;
@@ -76,7 +73,6 @@ struct node* insert(struct node* node, int datum)
 				else
 				{
 					node->right = newNode(datum);
-					node->next = node->right;
 					node->right->parent = node;
 					return node->right;
 				}
@@ -109,17 +105,11 @@ struct node* find(struct node* start, int value)
 //on that note, I waste a bunch of memory making the nodeNanny
 //structure but it's useful if I want to do other things,
 //so hopefully it's not a total waste
-void clean(struct node* messy)
+/*
+void clean(struct node* before)
 {
-	struct node *victim;
-	while(messy->next != NULL)
-	{
-		victim = messy->next->next;
-		free(messy->next);
-		messy->next = victim;
-	}
-	free(messy);
 }
+*/
 
 
 //prints tree down from passed node

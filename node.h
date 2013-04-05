@@ -8,7 +8,6 @@ struct node
 	node *left;
 	node *right;
 	node *parent;
-	node *next;
 };
 
 
