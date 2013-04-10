@@ -9,7 +9,6 @@ struct node
 	node *left;
 	node *right;
 	node *parent;
-	pthread_cond_t nodify;
 	pthread_mutex_t nodex;
 };
 
