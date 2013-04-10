@@ -10,6 +10,7 @@ struct node
 	node *parent;
 };
 
+struct tzwrytcvhbixtzyrtuuvuxrzdc
 
 struct node* max(struct node*);
 
