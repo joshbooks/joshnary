@@ -1,7 +1,7 @@
 #include "node.h"
 
 
-node*
+void *
 max (void *arg)
 {
 	int s;
@@ -9,39 +9,83 @@ max (void *arg)
 
 	while (middle->right != NULL)
 	{
+
+		s = pthread_mutex_lock(&middle->right->nodex);
+		if (s != 0)
+			exit(-1);
+
 		middle = middle->right;
+
+		s = pthread_mutex_unlock(&middle->nodex);
+		if (s != 0)
+			exit(-1);
+
+		s = pthread_cond_broadcast(&middle->nodify);
+		if (s != 0)
+			exit(-1);
+	}
+	return (void *)middle;
+}
+
+void *
+top (void *arg)
+{
+	int s;
+	node *bottom = (node *)arg;
+
+	while (bottom->parent != NULL)
+	{
+
+		s = pthread_mutex_lock(&bottom->parent->nodex);
+		if (s != 0)
+			exit(-1);
+
+
+		bottom = bottom->parent;
+
+		s = pthread_mutex_unlock(&bottom->nodex);
+		if (s != 0)
+			exit(-1);
+
+		s = pthread_cond_broadcast(&bottom->nodify);
+		if (s != 0)
+			exit(-1);
 	}
 
-	s = pthread_cond_wait(&middle->nodify, &middle->nodex);
-	if (s != 0)
-		exit(-1);
-	return middle;
-}
 
-node* top (void *arg)
-{
-	node *bottom = (node *)arg;
-	while (bottom->parent != NULL)
-		bottom = bottom->parent;
-	return bottom;
+
+	return (void *)bottom;
 }
 
 
-node* min (void *arg)
+void 
+*min (void *arg)
 {
 	int s;
 	node *middle = (node *)arg;
 
-	while (middle->right != NULL)
+	while (middle->left != NULL)
 	{
+
+		s = pthread_mutex_lock(&middle->left->nodex);
+		if (s != 0)
+			exit(-1);
+
+
 		middle = middle->left;
+
+		s = pthread_mutex_unlock(&middle->nodex);
+		if (s != 0)
+			exit(-1);
+
+		s = pthread_cond_broadcast(&middle->nodify);
+		if (s != 0)
+			exit(-1);
 	}
 
-	s = pthread_cond_wait(&middle->nodify, &middle->nodex);
-	if (s != 0)
-		exit(-1);
 
-	return middle;
+
+	return (void *)middle;
 }
 
 node* newNode(void *arg)
