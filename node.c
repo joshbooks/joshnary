@@ -1,31 +1,53 @@
 #include "node.h"
 
 
-struct node* max (struct node* middle)
+struct node* max (void *arg)
 {
+	int s;
+	node *middle = (node *)arg;
+
 	while (middle->right != NULL)
+	{
+		s = pthread_mutex_lock(&middle->nodex);
+		if (s != 0)
+			exit(-1);
+
+		s = pthread_cond_wait(&middle->nodify, &middle->nodex);
+		if (s != 0)
+			exit(-1);
+
 		middle = middle->right;
+
+		s = pthread_mutex_unlock(&middle->nodex);
+		if (s != 0)
+			exit(-1);
+
+	}
+
 	return middle;
 }
 
-struct node* top (struct node* bottom)
+struct node* top (void *arg)
 {
+	node *bottom = (node *)arg;
 	while (bottom->parent != NULL)
 		bottom = bottom->parent;
 	return bottom;
 }
 
 
-struct node* min (struct node* middle)
+struct node* min (void *arg)
 {
+	node *middle = (node *)arg;
 	while (middle->left != NULL)
 		middle = middle->left;
 	return middle;
 }
 
-struct node* newNode(int datum)
+struct node* newNode(void *arg)
 {
-	struct node *edon = (struct node *) malloc(sizeof(struct node));
+	int datum = (int)arg;
+	node *edon = (node *) malloc(sizeof(node));
 	edon->data = datum;
 	pthread_cond_init(&edon->nodify, NULL);
 	pthread_mutex_init(&edon->nodex, NULL);
@@ -47,14 +69,14 @@ struct node* insert(struct node* node, int datum)
 			{
 				if ( node->parent!=NULL && node->right==NULL && node->parent->right==NULL)
 				{
-					node->parent->right=newNode(node->parent->data);
+					node->parent->right=newNode((void *)node->parent->data);
 					node->parent->data = node->data;
 					node->data = datum;
 					return node;
 				}
 				else
 				{
-					node->left = newNode(datum);
+					node->left = newNode((void *)datum);
 					node->left->parent=node;
 					return node->left;
 				}
@@ -67,14 +89,14 @@ struct node* insert(struct node* node, int datum)
 			{
 				if (node->parent!=NULL && node->left==NULL && node->parent->left==NULL)
 				{
-					node->parent->left=newNode(node->parent->data);
+					node->parent->left=newNode((void *)node->parent->data);
 					node->parent->data = node->data;
 					node->data = datum;
 					return node;
 				}
 				else
 				{
-					node->right = newNode(datum);
+					node->right = newNode((void *)datum);
 					node->right->parent = node;
 					return node->right;
 				}
@@ -87,7 +109,7 @@ struct node* insert(struct node* node, int datum)
 	}
 }
 
-struct node* find(struct node* start, int value)
+node* find(node* start, int value)
 {
 	start = top(start);
 	while (start != NULL)
@@ -106,7 +128,7 @@ struct node* find(struct node* start, int value)
 //no matter what my cs teachers say;
 //on that note, I waste a bunch of memory recursing :(
 
-void clean(struct node* before)
+void clean(node* before)
 {
 
 	if (before->right != NULL)
@@ -125,7 +147,7 @@ void clean(struct node* before)
 //probably going to wind up being very similar to
 //linux tree, but a proper christmas tree appearance
 //would be excellent
-void treeprint(struct node* tree)
+void treeprint(node* tree)
 {
 	tree = top(tree);
 	

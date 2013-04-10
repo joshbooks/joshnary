@@ -13,13 +13,13 @@ struct node
 	pthread_mutex_t nodex;
 };
 
-struct node* max(struct node*);
+struct node* max(void *);
 
-struct node* min(struct node*);
+struct node* min(void *);
 
-struct node* top(struct node*);
+struct node* top(void *);
 
-struct node* newNode(int);
+struct node* newNode(void *);
 
 struct node* insert(struct node*, int);
 
