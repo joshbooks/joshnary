@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 
 typedef struct node node;
 struct node
@@ -8,8 +9,8 @@ struct node
 	node *left;
 	node *right;
 	node *parent;
-	pthread_cond_t nodify = PTHREAD_COND_INITIALIZER;
-	pthread_mutex_t nodex = PTHREAD_MUTEX_INITIALIZER;
+	pthread_cond_t nodify;
+	pthread_mutex_t nodex;
 };
 
 struct node* max(struct node*);
