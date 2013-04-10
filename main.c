@@ -3,7 +3,7 @@
 int
 main(void)
 {
-	struct node *n1 = newNode(5);
+	node *n1 = newNode(5);
 //	printf ("%i", insert(n1, 5)->data);
 //inserting a bunch sequentially is a great way to unbalance
 	int i;

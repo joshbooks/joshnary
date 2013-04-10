@@ -11,16 +11,16 @@ struct node
 };
 
 
-struct node* max(struct node*);
+node* max(struct node*);
 
-struct node* min(struct node*);
+node* min(struct node*);
 
-struct node* top(struct node*);
+node* top(struct node*);
 
-struct node* newNode(int);
+node* newNode(int);
 
-struct node* insert(struct node*, int);
+node* insert(struct node*, int);
 
-struct node* find(struct node*, int);
+node* find(struct node*, int);
 
 void clean(struct node*);

@@ -1,14 +1,14 @@
 #include "node.h"
 
 
-struct node* max (struct node* middle)
+node* max (node* middle)
 {
 	while (middle->right != NULL)
 		middle = middle->right;
 	return middle;
 }
 
-struct node* top (struct node* bottom)
+node* top (node* bottom)
 {
 	while (bottom->parent != NULL)
 		bottom = bottom->parent;
@@ -16,16 +16,16 @@ struct node* top (struct node* bottom)
 }
 
 
-struct node* min (struct node* middle)
+node* min (node* middle)
 {
 	while (middle->left != NULL)
 		middle = middle->left;
 	return middle;
 }
 
-struct node* newNode(int datum)
+node* newNode(int datum)
 {
-	struct node *edon = (struct node *) malloc(sizeof(struct node));
+	node *edon = (node *) malloc(sizeof(node));
 	edon->data = datum;
 	return edon;
 }
@@ -35,7 +35,7 @@ struct node* newNode(int datum)
 //significant, but it
 //would be nice to deal with that too
 
-struct node* insert(struct node* node, int datum)
+node* insert(node* node, int datum)
 {
 	node = top(node);
 	while (node != NULL)
@@ -85,7 +85,7 @@ struct node* insert(struct node* node, int datum)
 	}
 }
 
-struct node* find(struct node* start, int value)
+node* find(node* start, int value)
 {
 	start = top(start);
 	while (start != NULL)
@@ -104,7 +104,7 @@ struct node* find(struct node* start, int value)
 //no matter what my cs teachers say;
 //on that note, I waste a bunch of memory recursing :(
 
-void clean(struct node* before)
+void clean(node* before)
 {
 
 	if (before->right != NULL)
@@ -123,7 +123,7 @@ void clean(struct node* before)
 //probably going to wind up being very similar to
 //linux tree, but a proper christmas tree appearance
 //would be excellent
-void treeprint(struct node* tree)
+void treeprint(node* tree)
 {
 	tree = top(tree);
 	
