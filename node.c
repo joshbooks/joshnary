@@ -27,6 +27,7 @@ struct node* newNode(int datum)
 {
 	struct node *edon = (struct node *) malloc(sizeof(struct node));
 	edon->data = datum;
+	pthread_cond_init(&edon->nodify, NULL);
 	pthread_mutex_init(&edon->nodex, NULL);
 	return edon;
 }
