@@ -21,9 +21,9 @@ main(void)
 	for (i=0; i<10000; i++)
 		printf("%i\n", find(n1, i)->data);
 
-	printf ("%i", max(n1)->data);
+//	node *maximus = (node *)max((void *) n1);
 
-	printf ("%i", min(n1)->data);
+	printf ("%i", max(n1)->data);
 
 	clean(n1);
 	return 0;

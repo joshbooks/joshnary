@@ -1,29 +1,20 @@
 #include "node.h"
 
 
-node* max (void *arg)
+node*
+max (void *arg)
 {
 	int s;
 	node *middle = (node *)arg;
 
 	while (middle->right != NULL)
 	{
-		s = pthread_mutex_lock(&middle->nodex);
-		if (s != 0)
-			exit(-1);
-
-		s = pthread_cond_wait(&middle->nodify, &middle->nodex);
-		if (s != 0)
-			exit(-1);
-
 		middle = middle->right;
-
-		s = pthread_mutex_unlock(&middle->nodex);
-		if (s != 0)
-			exit(-1);
-
 	}
 
+	s = pthread_cond_wait(&middle->nodify, &middle->nodex);
+	if (s != 0)
+		exit(-1);
 	return middle;
 }
 
@@ -43,21 +34,12 @@ node* min (void *arg)
 
 	while (middle->right != NULL)
 	{
-		s = pthread_mutex_lock(&middle->nodex);
-		if (s != 0)
-			exit(-1);
-
-		s = pthread_cond_wait(&middle->nodify, &middle->nodex);
-		if (s != 0)
-			exit(-1);
-
 		middle = middle->left;
-
-		s = pthread_mutex_unlock(&middle->nodex);
-		if (s != 0)
-			exit(-1);
-
 	}
+
+	s = pthread_cond_wait(&middle->nodify, &middle->nodex);
+	if (s != 0)
+		exit(-1);
 
 	return middle;
 }
