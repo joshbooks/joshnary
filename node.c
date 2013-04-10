@@ -1,7 +1,7 @@
 #include "node.h"
 
 
-struct node* max (void *arg)
+node* max (void *arg)
 {
 	int s;
 	node *middle = (node *)arg;
@@ -27,7 +27,7 @@ struct node* max (void *arg)
 	return middle;
 }
 
-struct node* top (void *arg)
+node* top (void *arg)
 {
 	node *bottom = (node *)arg;
 	while (bottom->parent != NULL)
@@ -36,15 +36,33 @@ struct node* top (void *arg)
 }
 
 
-struct node* min (void *arg)
+node* min (void *arg)
 {
+	int s;
 	node *middle = (node *)arg;
-	while (middle->left != NULL)
+
+	while (middle->right != NULL)
+	{
+		s = pthread_mutex_lock(&middle->nodex);
+		if (s != 0)
+			exit(-1);
+
+		s = pthread_cond_wait(&middle->nodify, &middle->nodex);
+		if (s != 0)
+			exit(-1);
+
 		middle = middle->left;
+
+		s = pthread_mutex_unlock(&middle->nodex);
+		if (s != 0)
+			exit(-1);
+
+	}
+
 	return middle;
 }
 
-struct node* newNode(void *arg)
+node* newNode(void *arg)
 {
 	int datum = (int)arg;
 	node *edon = (node *) malloc(sizeof(node));
@@ -59,7 +77,7 @@ struct node* newNode(void *arg)
 //significant, but it
 //would be nice to deal with that too
 
-struct node* insert(struct node* node, int datum)
+node* insert(struct node* node, int datum)
 {
 	node = top(node);
 	while (node != NULL)
