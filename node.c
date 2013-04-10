@@ -88,14 +88,15 @@ void
 	return (void *)middle;
 }
 
-node* newNode(void *arg)
+void *
+newNode(void *arg)
 {
 	int datum = (int)arg;
 	node *edon = (node *) malloc(sizeof(node));
 	edon->data = datum;
 	pthread_cond_init(&edon->nodify, NULL);
 	pthread_mutex_init(&edon->nodex, NULL);
-	return edon;
+	return (void *)edon;
 }
 
 //performs one extra check at the bottom, seems to alleviate the long-branch

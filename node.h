@@ -19,7 +19,7 @@ void* min(void *);
 
 void* top(void *);
 
-node* newNode(void *);
+void* newNode(void *);
 
 node* insert(struct node*, int);
 
