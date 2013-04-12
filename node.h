@@ -13,6 +13,13 @@ struct node
 	pthread_mutex_t nodex;
 };
 
+typedef struct nodint nodint;
+struct nodint
+{
+	node* tree;
+	int data;
+};
+
 void* max(void *);
 
 void* min(void *);
@@ -21,7 +28,7 @@ void* top(void *);
 
 void* newNode(void *);
 
-node* insert(struct node*, int);
+void* insert(void *);
 
 node* find(struct node*, int);
 

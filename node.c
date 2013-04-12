@@ -4,86 +4,33 @@
 void *
 max (void *arg)
 {
-	int s;
 	node *middle = (node *)arg;
 
 	while (middle->right != NULL)
-	{
-
-		s = pthread_mutex_lock(&middle->right->nodex);
-		if (s != 0)
-			exit(-1);
-
 		middle = middle->right;
 
-		s = pthread_mutex_unlock(&middle->nodex);
-		if (s != 0)
-			exit(-1);
-
-		s = pthread_cond_broadcast(&middle->nodify);
-		if (s != 0)
-			exit(-1);
-	}
 	return (void *)middle;
 }
 
 void *
 top (void *arg)
 {
-	int s;
 	node *bottom = (node *)arg;
 
 	while (bottom->parent != NULL)
-	{
-
-		s = pthread_mutex_lock(&bottom->parent->nodex);
-		if (s != 0)
-			exit(-1);
-
-
 		bottom = bottom->parent;
-
-		s = pthread_mutex_unlock(&bottom->nodex);
-		if (s != 0)
-			exit(-1);
-
-		s = pthread_cond_broadcast(&bottom->nodify);
-		if (s != 0)
-			exit(-1);
-	}
-
-
 
 	return (void *)bottom;
 }
 
 
-void 
+void
 *min (void *arg)
 {
-	int s;
 	node *middle = (node *)arg;
 
 	while (middle->left != NULL)
-	{
-
-		s = pthread_mutex_lock(&middle->left->nodex);
-		if (s != 0)
-			exit(-1);
-
-
 		middle = middle->left;
-
-		s = pthread_mutex_unlock(&middle->nodex);
-		if (s != 0)
-			exit(-1);
-
-		s = pthread_cond_broadcast(&middle->nodify);
-		if (s != 0)
-			exit(-1);
-	}
-
-
 
 	return (void *)middle;
 }
@@ -91,9 +38,8 @@ void
 void *
 newNode(void *arg)
 {
-	int datum = (int)arg;
 	node *edon = (node *) malloc(sizeof(node));
-	edon->data = datum;
+	edon->data = (int)arg;
 	pthread_cond_init(&edon->nodify, NULL);
 	pthread_mutex_init(&edon->nodex, NULL);
 	return (void *)edon;
@@ -104,8 +50,15 @@ newNode(void *arg)
 //significant, but it
 //would be nice to deal with that too
 
-node* insert(struct node* node, int datum)
+void *
+insert(void *arg)
 {
+
+	int s;
+	struct nodint *stuff = (struct nodint *)arg;
+	node *node = stuff->tree;
+	int datum = stuff->data;
+	printf("%i\n", datum);
 	node = top(node);
 	while (node != NULL)
 	{
@@ -114,15 +67,34 @@ node* insert(struct node* node, int datum)
 			{
 				if ( node->parent!=NULL && node->right==NULL && node->parent->right==NULL)
 				{
+					s = pthread_mutex_lock(&node->parent->nodex);
+					if (s != 0)
+						exit(s);
+
 					node->parent->right=newNode((void *)node->parent->data);
 					node->parent->data = node->data;
 					node->data = datum;
+
+					s = pthread_mutex_unlock(&node->parent->nodex);
+					if (s != 0)
+						exit(s);
+
 					return node;
 				}
 				else
 				{
+
+					s = pthread_mutex_lock(&node->nodex);
+					if (s != 0)
+						exit(s);
+
 					node->left = newNode((void *)datum);
 					node->left->parent=node;
+
+					s = pthread_mutex_unlock(&node->nodex);
+					if (s != 0)
+						exit(s);
+
 					return node->left;
 				}
 			}
@@ -134,15 +106,35 @@ node* insert(struct node* node, int datum)
 			{
 				if (node->parent!=NULL && node->left==NULL && node->parent->left==NULL)
 				{
+
+					s = pthread_mutex_lock(&node->parent->nodex);
+					if (s != 0)
+						exit(s);
+
 					node->parent->left=newNode((void *)node->parent->data);
 					node->parent->data = node->data;
 					node->data = datum;
+
+					s = pthread_mutex_unlock(&node->parent->nodex);
+					if (s != 0)
+						exit(s);
+
 					return node;
 				}
 				else
 				{
+
+					s = pthread_mutex_lock(&node->nodex);
+					if (s != 0)
+						exit(s);
+
 					node->right = newNode((void *)datum);
 					node->right->parent = node;
+
+					s = pthread_mutex_unlock(&node->nodex);
+					if (s != 0)
+						exit(s);
+
 					return node->right;
 				}
 			}

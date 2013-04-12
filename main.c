@@ -1,7 +1,6 @@
 #include "node.h"
 
 
-
 int
 main(void)
 {
@@ -22,15 +21,29 @@ main(void)
 	node *n1 = (node *)mess2;
 
 //inserting a bunch sequentially is a great way to unbalance
+//or create race conditions now that we're being all thready
 	int i;
-	for (i=0; i<10000; i++)
-		insert (n1, i);
+	struct nodint *inserter = calloc(10000, sizeof(struct nodint));
 
-//if I can print all this crap it's a useful print function
+
+	pthread_t *tarry = calloc(10000, sizeof(pthread_t));
+
+	for (i=0; i<10000; i++)
+	{
+	inserter[i].tree = n1;
+	inserter[i].data = i;
+	s = pthread_create(&tarry[i], NULL, insert, (void *)&inserter[i]);
+	if (s != 0)
+		exit(-1);
+	}
+
+
 //	treeprint(n1);
+//if I can print all this crap it's a useful print function
+
 //make sure I haven't screwed up tree structure
-//	for (i=0; i<10000; i++)
-//		printf("%i\n", find(n1, i)->data);
+	for (i=0; i<10000; i++)
+		printf("%i\n", find(n1, i)->data);
 
 
 //create threads to do stuff
@@ -38,7 +51,7 @@ main(void)
 	if (s != 0)
 		exit(-1);
 
-	s = pthread_create(&t2, NULL, top, n1);
+	s = pthread_create(&t2, NULL, min, n1);
 	if (s != 0)
 		exit(-1);
 
