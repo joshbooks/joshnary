@@ -23,28 +23,49 @@ main(void)
 //inserting a bunch sequentially is a great way to unbalance
 //or create race conditions now that we're being all thready
 	int i;
-	struct nodint *inserter = calloc(10000, sizeof(struct nodint));
+	int numThreads = 10000;
 
 
-	pthread_t *tarry = calloc(10000, sizeof(pthread_t));
+	pthread_attr_t *attr = calloc(numThreads, sizeof(pthread_attr_t));
 
-	for (i=0; i<10000; i++)
+
+
+	struct nodint *inserter = calloc(numThreads, sizeof(struct nodint));
+
+	pthread_t *tarry = calloc(numThreads, sizeof(pthread_t));
+
+	for (i=0; i<numThreads; i++)
 	{
-	inserter[i].tree = n1;
-	inserter[i].data = i;
-	s = pthread_create(&tarry[i], NULL, insert, (void *)&inserter[i]);
-	if (s != 0)
-		exit(-1);
+
+		s = pthread_attr_init(&attr[i]);
+		if (s != 0)
+			exit(s);
+
+		s = pthread_attr_setdetachstate(&attr[i], PTHREAD_CREATE_DETACHED);
+		if (s != 0)
+			exit(s);
+
+		inserter[i].tree = n1;
+		inserter[i].data = i;
+		s = pthread_create(&tarry[i], &attr[i], insert, (void *)&inserter[i]);
+		if (s != 0)
+			exit(-1);
+
+		s = pthread_attr_destroy(&attr[i]);
+		if (s != 0)
+			exit(s);
+
 	}
+
 
 
 //	treeprint(n1);
 //if I can print all this crap it's a useful print function
 
 //make sure I haven't screwed up tree structure
-	for (i=0; i<10000; i++)
+/*	for (i=0; i<10000; i++)
 		printf("%i\n", find(n1, i)->data);
-
+*/
 
 //create threads to do stuff
 	s = pthread_create(&t1, NULL, max, n1);

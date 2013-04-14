@@ -50,6 +50,9 @@ newNode(void *arg)
 //significant, but it
 //would be nice to deal with that too
 
+//naturally the debugging printf statement fixes the race condition
+//so I have to actually think about this, hopefully nothing will overheat
+
 void *
 insert(void *arg)
 {
@@ -58,7 +61,7 @@ insert(void *arg)
 	struct nodint *stuff = (struct nodint *)arg;
 	node *node = stuff->tree;
 	int datum = stuff->data;
-	printf("%i\n", datum);
+//	printf("%i\n", datum);
 	node = top(node);
 	while (node != NULL)
 	{
