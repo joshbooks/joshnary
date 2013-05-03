@@ -1,3 +1,5 @@
+/*Copyright 2013 Joshua Hight
+* Kopimi*/
 #include "node.h"
 
 
