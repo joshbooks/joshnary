@@ -26,10 +26,6 @@ main(void)
 	int numThreads = 10000;
 
 
-	pthread_attr_t *attr = calloc(numThreads, sizeof(pthread_attr_t));
-
-
-
 	struct nodint *inserter = calloc(numThreads, sizeof(struct nodint));
 
 	pthread_t *tarry = calloc(numThreads, sizeof(pthread_t));
@@ -37,23 +33,11 @@ main(void)
 	for (i=0; i<numThreads; i++)
 	{
 
-		s = pthread_attr_init(&attr[i]);
-		if (s != 0)
-			exit(s);
-
-		s = pthread_attr_setdetachstate(&attr[i], PTHREAD_CREATE_DETACHED);
-		if (s != 0)
-			exit(s);
-
 		inserter[i].tree = n1;
 		inserter[i].data = i;
-		s = pthread_create(&tarry[i], &attr[i], insert, (void *)&inserter[i]);
+		s = pthread_create(&tarry[i], NULL, insert, (void *)&inserter[i]);
 		if (s != 0)
 			exit(-1);
-
-		s = pthread_attr_destroy(&attr[i]);
-		if (s != 0)
-			exit(s);
 
 	}
 

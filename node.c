@@ -1,13 +1,30 @@
+/*Copyright 2013 Joshua Hight
+* Kopimi */
+
+
+
 #include "node.h"
 
 
 void *
 max (void *arg)
 {
+	int s;
 	node *middle = (node *)arg;
 
 	while (middle->right != NULL)
+	{
+
+		s = pthread_mutex_lock(&middle->nodex);
+		if (s != 0)
+			exit(s);
+
 		middle = middle->right;
+
+		s = pthread_mutex_unlock(&middle->parent->nodex);
+		if (s != 0)
+			exit(s);
+	}
 
 	return (void *)middle;
 }
@@ -15,11 +32,23 @@ max (void *arg)
 void *
 top (void *arg)
 {
+	int s;
 	node *bottom = (node *)arg;
 
 	while (bottom->parent != NULL)
+	{
+
+		s = pthread_mutex_lock(&bottom->parent->nodex);
+		if (s != 0)
+			exit(s);
+
 		bottom = bottom->parent;
 
+		s = pthread_mutex_unlock(&bottom->nodex);
+		if (s != 0)
+			exit(s);
+	}
+	
 	return (void *)bottom;
 }
 
@@ -27,10 +56,21 @@ top (void *arg)
 void
 *min (void *arg)
 {
+	int s;
 	node *middle = (node *)arg;
 
 	while (middle->left != NULL)
+	{
+		s = pthread_mutex_lock(&middle->nodex);
+		if (s != 0)
+			exit(s);
+
 		middle = middle->left;
+
+		s = pthread_mutex_lock(&middle->parent->nodex);
+		if (s != 0)
+			exit(s);
+	}
 
 	return (void *)middle;
 }
